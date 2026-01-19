@@ -327,7 +327,7 @@ def train_model(gw_dir, dataset_dir, config):
     epochs = config.get("epochs", "15")
     warmup_epochs = config.get("warmup_epochs", "1")
     p_augment = config.get("p_augment", "0.2")
-    batch_size = config.get("batch_size", "8")
+    batch_size = config.get("batch_size", "1")
     train_device = config.get("train_device", "cuda:0")
     
     train_script = os.path.join(gw_dir, "train.py")
