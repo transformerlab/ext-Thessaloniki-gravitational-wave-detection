@@ -156,9 +156,9 @@ def generate_datasets(challenge_dir, dataset_dir, config):
     lab.log("="*60)
     
     data_set = config.get("data_set", "4")
-    train_samples = config.get("train_samples", "100")
-    val_samples = config.get("val_samples", "200")
-    test_samples = config.get("test_samples", "300")
+    train_samples = config.get("train_samples", "5000")
+    val_samples = config.get("val_samples", "2000")
+    test_samples = config.get("test_samples", "1000")
     
     generate_data_script = os.path.join(challenge_dir, "generate_data.py")
     
