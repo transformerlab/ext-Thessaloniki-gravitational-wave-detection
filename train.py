@@ -56,6 +56,11 @@ def run_command(command, description, cwd=None):
             for line in result.stdout.splitlines():
                 lab.log(f"   {line}")
         
+        # Also log stderr output (useful for verbose messages)
+        if result.stderr:
+            for line in result.stderr.splitlines():
+                lab.log(f"   {line}")
+        
         if result.returncode != 0:
             lab.log(f"❌ Command failed with return code {result.returncode}")
             if result.stderr:
