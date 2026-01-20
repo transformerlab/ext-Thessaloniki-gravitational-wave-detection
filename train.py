@@ -43,37 +43,40 @@ def run_command(command, description, cwd=None):
     lab.log(f"   Command: {command}")
     
     try:
-        result = subprocess.run(
+        process = subprocess.Popen(
             command,
             shell=True,
             cwd=cwd,
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
-            timeout=3600  # 1 hour timeout
+            bufsize=1,  # Line buffered
+            universal_newlines=True
         )
         
-        if result.stdout:
-            for line in result.stdout.splitlines():
+        # Read output in real-time
+        while True:
+            output = process.stdout.readline()
+            if output == '' and process.poll() is not None:
+                break
+            if output:
+                lab.log(f"   {output.strip()}")
+        
+        # Read any remaining stderr
+        stderr_output = process.stderr.read()
+        if stderr_output:
+            for line in stderr_output.splitlines():
                 lab.log(f"   {line}")
         
-        # Also log stderr output (useful for verbose messages)
-        if result.stderr:
-            for line in result.stderr.splitlines():
-                lab.log(f"   {line}")
+        returncode = process.poll()
         
-        if result.returncode != 0:
-            lab.log(f"❌ Command failed with return code {result.returncode}")
-            if result.stderr:
-                for line in result.stderr.splitlines():
-                    lab.log(f"   ERROR: {line}")
+        if returncode != 0:
+            lab.log(f"❌ Command failed with return code {returncode}")
             return False
         
         lab.log(f"✅ {description} completed")
         return True
         
-    except subprocess.TimeoutExpired:
-        lab.log(f"❌ Command timed out after 1 hour")
-        return False
     except Exception as e:
         lab.log(f"❌ Error executing command: {e}")
         return False
@@ -161,8 +164,8 @@ def generate_datasets(challenge_dir, dataset_dir, config):
     lab.log("="*60)
     
     data_set = config.get("data_set", "4")
-    train_samples = config.get("train_samples", "5000")
-    val_samples = config.get("val_samples", "2000")
+    train_samples = config.get("train_samples", "2000")
+    val_samples = config.get("val_samples", "1000")
     test_samples = config.get("test_samples", "1000")
     
     generate_data_script = os.path.join(challenge_dir, "generate_data.py")
