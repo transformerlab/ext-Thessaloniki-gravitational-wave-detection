@@ -48,7 +48,7 @@ def run_command(command, description, cwd=None):
             shell=True,
             cwd=cwd,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,  # Line buffered
             universal_newlines=True
@@ -61,12 +61,6 @@ def run_command(command, description, cwd=None):
                 break
             if output:
                 lab.log(f"   {output.strip()}")
-        
-        # Read any remaining stderr
-        stderr_output = process.stderr.read()
-        if stderr_output:
-            for line in stderr_output.splitlines():
-                lab.log(f"   {line}")
         
         returncode = process.poll()
         
