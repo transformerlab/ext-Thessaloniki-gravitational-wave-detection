@@ -428,11 +428,6 @@ def train_model(gw_dir, dataset_dir, config):
         current_lr = float(learning_rate) * (float(gamma) ** (epoch // 5))
         lab.log(f"     Learning rate: {current_lr:.6f}")
         
-        # Log metrics
-        lab.log_metric("train_loss", train_loss, step=epoch)
-        lab.log_metric("train_accuracy", train_acc, step=epoch)
-        lab.log_metric("learning_rate", current_lr, step=epoch)
-        
         # Validation phase
         lab.log(f"   Validation:")
         time.sleep(0.3)
@@ -448,12 +443,6 @@ def train_model(gw_dir, dataset_dir, config):
         lab.log(f"     Recall: {val_acc + 0.02:.2%}")
         lab.log(f"     F1 Score: {val_f1:.2%}")
         lab.log(f"     AUC-ROC: {val_auc:.4f}")
-        
-        # Log validation metrics
-        lab.log_metric("val_loss", val_loss, step=epoch)
-        lab.log_metric("val_accuracy", val_acc, step=epoch)
-        lab.log_metric("val_f1_score", val_f1, step=epoch)
-        lab.log_metric("val_auc_roc", val_auc, step=epoch)
         
         # Checkpoint saving
         if epoch % 5 == 0 or epoch == epochs_int:
