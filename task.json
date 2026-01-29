@@ -10,20 +10,171 @@
     "CUDA_VISIBLE_DEVICES": "0"
   },
   "parameters": {
-    "data_set": "4",
-    "train_samples": "100",
-    "val_samples": "200",
-    "test_samples": "300",
-    "slice_duration": "1.25",
-    "slice_dur": "4.25",
-    "slice_stride": "2",
-    "learning_rate": "1e-3",
-    "lr_milestones": "5,10",
-    "gamma": "0.5",
-    "epochs": "15",
-    "warmup_epochs": "1",
-    "p_augment": "0.2",
-    "batch_size": "8",
-    "train_device": "cuda:0"
+    "data_set": {
+      "type": "enum",
+      "default": "4",
+      "options": ["1", "2", "3", "4"],
+      "ui_widget": "radio",
+      "title": "Dataset Version",
+      "description": "Select which gravitational wave dataset version to use"
+    },
+    
+    "train_samples": {
+      "type": "int",
+      "default": 100,
+      "min": 10,
+      "max": 10000,
+      "step": 10,
+      "ui_widget": "slider",
+      "title": "Training Samples",
+      "description": "Number of training samples to generate"
+    },
+    
+    "val_samples": {
+      "type": "int",
+      "default": 200,
+      "min": 10,
+      "max": 5000,
+      "step": 10,
+      "ui_widget": "slider",
+      "title": "Validation Samples",
+      "description": "Number of validation samples to generate"
+    },
+    
+    "test_samples": {
+      "type": "int",
+      "default": 300,
+      "min": 10,
+      "max": 5000,
+      "step": 10,
+      "ui_widget": "slider",
+      "title": "Test Samples",
+      "description": "Number of test samples to generate"
+    },
+    
+    "duration": {
+      "type": "int",
+      "default": 500,
+      "min": 100,
+      "max": 2000,
+      "step": 50,
+      "ui_widget": "slider",
+      "title": "Sample Duration (seconds)",
+      "description": "Duration of each data sample in seconds"
+    },
+    
+    "slice_duration": {
+      "type": "float",
+      "default": 1.25,
+      "min": 0.5,
+      "max": 5.0,
+      "step": 0.25,
+      "ui_widget": "slider",
+      "title": "Slice Duration (seconds)",
+      "description": "Duration of each waveform slice"
+    },
+    
+    "slice_dur": {
+      "type": "float",
+      "default": 4.25,
+      "min": 1.0,
+      "max": 10.0,
+      "step": 0.25,
+      "ui_widget": "slider",
+      "title": "Training Slice Duration (seconds)",
+      "description": "Duration of slices used during training"
+    },
+    
+    "slice_stride": {
+      "type": "int",
+      "default": 2,
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "ui_widget": "slider",
+      "title": "Slice Stride",
+      "description": "Stride between consecutive slices"
+    },
+    
+    "learning_rate": {
+      "type": "float",
+      "default": 0.001,
+      "min": 0.00001,
+      "max": 0.1,
+      "step": 0.00001,
+      "title": "Learning Rate",
+      "description": "Initial learning rate for training"
+    },
+    
+    "lr_milestones": {
+      "type": "string",
+      "default": "5,10",
+      "title": "LR Milestones",
+      "description": "Epochs at which to reduce learning rate (comma-separated)"
+    },
+    
+    "gamma": {
+      "type": "float",
+      "default": 0.5,
+      "min": 0.1,
+      "max": 1.0,
+      "step": 0.1,
+      "ui_widget": "slider",
+      "title": "Learning Rate Gamma",
+      "description": "Multiplicative factor for learning rate decay"
+    },
+    
+    "epochs": {
+      "type": "int",
+      "default": 15,
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "ui_widget": "slider",
+      "title": "Number of Epochs",
+      "description": "Total number of training epochs"
+    },
+    
+    "warmup_epochs": {
+      "type": "int",
+      "default": 1,
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "ui_widget": "slider",
+      "title": "Warmup Epochs",
+      "description": "Number of warmup epochs at the beginning of training"
+    },
+    
+    "p_augment": {
+      "type": "float",
+      "default": 0.2,
+      "min": 0.0,
+      "max": 1.0,
+      "step": 0.05,
+      "ui_widget": "slider",
+      "title": "Data Augmentation Probability",
+      "description": "Probability of applying data augmentation"
+    },
+    
+    "batch_size": {
+      "type": "int",
+      "default": 8,
+      "min": 1,
+      "max": 128,
+      "step": 1,
+      "ui_widget": "slider",
+      "title": "Batch Size",
+      "description": "Number of samples per training batch"
+    },
+    
+    "train_device": {
+      "type": "enum",
+      "default": "cuda:0",
+      "options": ["cuda:0", "cuda:1", "cpu"],
+      "ui_widget": "radio",
+      "title": "Training Device",
+      "description": "Device to use for training (GPU or CPU)"
+    }
   }
 }

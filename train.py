@@ -187,6 +187,7 @@ def generate_datasets(challenge_dir, dataset_dir, config):
     train_samples = config.get("train_samples", "1000")
     val_samples = config.get("val_samples", "500")
     test_samples = config.get("test_samples", "500")
+    duration = config.get("duration", "500")
     
     generate_data_script = os.path.join(challenge_dir, "generate_data.py")
     
@@ -222,7 +223,7 @@ def generate_datasets(challenge_dir, dataset_dir, config):
             f"-i {injection_file} "
             f"-b {background_file} "
             f"-f {foreground_file} "
-            f"--verbose --force --seed {dataset['seed']}"
+            f"--verbose --force --seed {dataset['seed']} --duration {duration}"
         )
         
         if not run_command(cmd, f"Generating {dataset['name']}", challenge_dir):
