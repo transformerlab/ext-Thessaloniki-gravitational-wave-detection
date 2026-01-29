@@ -43,6 +43,10 @@ def run_command(command, description, cwd=None):
     lab.log(f"   Command: {command}")
     
     try:
+        # Set environment to disable Python buffering
+        env = os.environ.copy()
+        env['PYTHONUNBUFFERED'] = '1'
+        
         process = subprocess.Popen(
             command,
             shell=True,
@@ -50,9 +54,13 @@ def run_command(command, description, cwd=None):
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
-            bufsize=1,  # Line buffered
-            universal_newlines=True
+            bufsize=0,  # Unbuffered
+            universal_newlines=True,
+            env=env
         )
+        
+        last_progress_line = None
+        progress_patterns = ['Progress:', '%|', 'MB/s', 'kB/s', 'GB/s']
         
         # Read output in real-time
         while True:
@@ -60,7 +68,25 @@ def run_command(command, description, cwd=None):
             if output == '' and process.poll() is not None:
                 break
             if output:
-                lab.log(f"   {output.strip()}")
+                stripped_output = output.strip()
+                
+                # Check if this is a progress bar line
+                is_progress = any(pattern in stripped_output for pattern in progress_patterns)
+                
+                if is_progress:
+                    # Store the progress line but don't log it yet
+                    last_progress_line = stripped_output
+                else:
+                    # If we had a pending progress line, log it once before the non-progress line
+                    if last_progress_line:
+                        lab.log(f"   {last_progress_line}")
+                        last_progress_line = None
+                    # Log the non-progress line
+                    lab.log(f"   {stripped_output}")
+        
+        # Log the final progress line if there was one
+        if last_progress_line:
+            lab.log(f"   {last_progress_line}")
         
         returncode = process.poll()
         
@@ -158,9 +184,9 @@ def generate_datasets(challenge_dir, dataset_dir, config):
     lab.log("="*60)
     
     data_set = config.get("data_set", "4")
-    train_samples = config.get("train_samples", "2000")
-    val_samples = config.get("val_samples", "1000")
-    test_samples = config.get("test_samples", "1000")
+    train_samples = config.get("train_samples", "1000")
+    val_samples = config.get("val_samples", "500")
+    test_samples = config.get("test_samples", "500")
     
     generate_data_script = os.path.join(challenge_dir, "generate_data.py")
     
