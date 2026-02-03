@@ -1,6 +1,6 @@
 name: gw-detection-training
 resources:
-  compute_provider: RTX3090
+  compute_provider: RTX3090:1
 envs:
   PYTHONUNBUFFERED: "1"
   CUDA_VISIBLE_DEVICES: "0"
