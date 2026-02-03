@@ -1,12 +1,11 @@
-title: Gravitational Wave Detection Deep Learning Training
 name: gw-detection-training
-description: End-to-end pipeline for gravitational wave detection using deep learning. This task clones the ML Mock Data Challenge repository and the AresGW model training repository, generates synthetic gravitational wave datasets (training, validation, and test sets) with real LIGO noise, generates waveforms, and trains a ResNet54Double-based neural network model with DAIN normalization and whitening modules for detecting gravitational wave signals.
-command: cd ~/gravitational-trainer && python train1.py
-accelerators: RTX3090:1
-setup: uv pip install torch numpy h5py tqdm requests pycbc matplotlib scipy transformerlab ligo-segments
-env_vars:
+resources:
+  compute_provider: RTX3090
+envs:
   PYTHONUNBUFFERED: "1"
   CUDA_VISIBLE_DEVICES: "0"
+setup: "uv pip install torch numpy h5py tqdm requests pycbc matplotlib scipy transformerlab ligo-segments"
+run: "cd ~/gravitational-trainer && python train1.py"
 parameters:
   data_set:
     type: enum
