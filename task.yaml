@@ -5,7 +5,7 @@ envs:
   PYTHONUNBUFFERED: "1"
   CUDA_VISIBLE_DEVICES: "0"
 setup: "git clone https://github.com/transformerlab/transformerlab-app.git && cd transformerlab-app/lab-sdk && uv pip install -e . && cd ../.. && uv pip install torch numpy h5py tqdm requests pycbc matplotlib scipy ligo-segments"
-run: "cd ~/gravitational-trainer && python train1.py"
+run: "cd ~/ext-Thessaloniki-gravitational-wave-detection && python train1.py"
 parameters:
   data_set:
     type: enum
