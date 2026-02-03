@@ -4,7 +4,7 @@ resources:
 envs:
   PYTHONUNBUFFERED: "1"
   CUDA_VISIBLE_DEVICES: "0"
-setup: "uv pip install torch numpy h5py tqdm requests pycbc matplotlib scipy transformerlab ligo-segments"
+setup: "git clone https://github.com/transformerlab/transformerlab-app.git && cd transformerlab-app/lab-sdk && uv pip install -e . && cd ../.. && uv pip install torch numpy h5py tqdm requests pycbc matplotlib scipy ligo-segments"
 run: "cd ~/gravitational-trainer && python train1.py"
 parameters:
   data_set:
