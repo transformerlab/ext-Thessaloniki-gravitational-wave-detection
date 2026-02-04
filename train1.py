@@ -211,7 +211,7 @@ def generate_datasets(challenge_dir, dataset_dir, config):
         for file_path in [injection_file, background_file, foreground_file]:
             if os.path.exists(file_path):
                 try:
-                    artifact_path = lab.save_artifact(file_path, os.path.basename(file_path))
+                    artifact_path = lab.save_artifact(file_path, os.path.basename(file_path), type="dataset")
                     lab.log(f"   Saved artifact: {os.path.basename(file_path)}")
                 except Exception as e:
                     lab.log(f"   Note: Could not save artifact {os.path.basename(file_path)}: {e}")
@@ -277,7 +277,7 @@ def generate_waveforms(challenge_dir, dataset_dir, gw_dir, config):
     
     # Save artifact
     try:
-        artifact_path = lab.save_artifact(val_output, os.path.basename(val_output))
+        artifact_path = lab.save_artifact(val_output, os.path.basename(val_output), type="dataset")
         lab.log(f"   Saved artifact: {os.path.basename(val_output)}")
     except Exception as e:
         lab.log(f"   Note: Could not save artifact: {e}")
@@ -319,7 +319,7 @@ def generate_waveforms(challenge_dir, dataset_dir, gw_dir, config):
     
     # Save artifact
     try:
-        artifact_path = lab.save_artifact(train_output, os.path.basename(train_output))
+        artifact_path = lab.save_artifact(train_output, os.path.basename(train_output), type="dataset")
         lab.log(f"   Saved artifact: {os.path.basename(train_output)}")
     except Exception as e:
         lab.log(f"   Note: Could not save artifact: {e}")
@@ -486,7 +486,7 @@ def save_model_artifacts(gw_dir):
         lab.log(f"   Weights file: {os.path.basename(weights_path)}")
         lab.log(f"   Size: {os.path.getsize(weights_path) / (1024*1024):.2f} MB")
         try:
-            artifact_path = lab.save_artifact(weights_path, "improved_d4_model_weight.pt")
+            artifact_path = lab.save_artifact(weights_path, "improved_d4_model_weight.pt", type="model")
             lab.log(f"✅ Saved model weights: improved_d4_model_weight.pt")
         except Exception as e:
             lab.log(f"❌ Failed to save model weights: {e}")
